@@ -140,7 +140,7 @@ int main(int argc, char *argv[]) {
 
                     case 'q':
                     case 'Q':
-                    case 27: // Instant ESC exit
+                    case 27: 
                         running = false;
                         break;
                 }

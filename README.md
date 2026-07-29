@@ -9,3 +9,13 @@ Fast tui binder for terminal users to adjust x11 brightness using libXrandr
 ---
 
 ![coreimg](./.github/coreimg)
+
+
+# keys
+
+|+|-|
+|----|----|
+|q/esc|quit|
+|1-9|adjust|
+|left/right|increase/decrease|
+|spacebar|reset|
