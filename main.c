@@ -7,7 +7,7 @@
 #include <X11/Xlib.h>
 #include <X11/extensions/Xrandr.h>
 #include <ncurses.h>
-
+// The reason I added delay for not overheat and smoother performance 128ms not bad
 #define STEP 0.05          // 5% step for left/right arrows
 #define MIN_BRIGHT 0.1     // 10% minimum floor
 #define MAX_BRIGHT 2.0     // 200% maximum ceiling
@@ -15,6 +15,7 @@
 #ifndef VERSION
 #define VERSION "2026/00"
 #endif
+#define GITHUB_URL "https://github.com/HalanoSiblee/xorg-brightness-adjuster-tui/"
 
 // Apply brightness via Xrandr CRTC gamma ramps
 static void set_x11_brightness(Display *dpy, double brightness) {
@@ -44,7 +45,6 @@ static void set_x11_brightness(Display *dpy, double brightness) {
         XRRSetCrtcGamma(dpy, crtc, gamma);
         XRRFreeGamma(gamma);
     }
-
     XRRFreeScreenResources(res);
     XFlush(dpy);
 }
@@ -83,7 +83,8 @@ static void draw_ui(double brightness, const char *status) {
 int main(int argc, char *argv[]) {
     if (argc > 1) {
         if (strcmp(argv[1], "-v") == 0 || strcmp(argv[1], "--version") == 0) {
-            printf("xorg-brightness-adjuster-tui version %s\n", VERSION);
+            printf("\033]8;;%s\033\\\033[1m\033[3mxorg-brightness-adjuster-tui\033[0m\033]8;;\033\\\n", GITHUB_URL);
+            printf("Version: %s\n", VERSION);
             return EXIT_SUCCESS;
         }
     }
@@ -152,7 +153,7 @@ int main(int argc, char *argv[]) {
             }
         }
 
-        // Apply hardware change non-blockingly after 500ms of inactivity
+        // Apply hardware change non-blockingly after 128ms of inactivity
         if (pending_change && (get_time_ms() - last_keypress_time >= DELAY_MS)) {
             set_x11_brightness(dpy, brightness);
             pending_change = false;
